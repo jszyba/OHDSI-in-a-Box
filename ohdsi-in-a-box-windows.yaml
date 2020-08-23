@@ -176,6 +176,8 @@ Resources:
           var response = require('cfn-response');
           var AWS = require('aws-sdk');
           exports.handler = function(event, context) {
+            console.log("event");
+            console.log(event);
             var physicalId = event.PhysicalResourceId || 'none';
             function success(data) {
               return response.send(event, context, response.SUCCESS, data, physicalId);
@@ -187,8 +189,12 @@ Resources:
             var instances;
             if (event.RequestType == 'Create') {
               var launchParams = event.ResourceProperties;
+              console.log("launchParams");
+              console.log(launchParams);
               delete launchParams.ServiceToken;
               ec2.runInstances(launchParams).promise().then((data)=> {
+                console.log("data");
+                console.log(data);
                 instances = data.Instances.map((data)=> data.InstanceId);
                 physicalId = instances.join(':');
                 return ec2.waitFor('instanceRunning', {InstanceIds: instances}).promise();
