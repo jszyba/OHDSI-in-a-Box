@@ -6,8 +6,10 @@
 # or in the "license" file accompanying this file. This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, 
 # either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
+
 AWSTemplateFormatVersion: '2010-09-09'
 Description: This CloudFormation Template deploys a specified number of OHDSI-in-a-Box servers.
+
 Metadata:
   AWS::CloudFormation::Interface:
     ParameterGroups:
@@ -21,7 +23,6 @@ Metadata:
       Parameters:
         - NumberofInstances
         - InstanceType
-        - KeyName
         - VolumeSizeGB
     - Label:
           default: Networking
@@ -38,14 +39,14 @@ Metadata:
         default: Number of OHDSI-in-a-Box instances to deploy
       InstanceType:
         default: Instance type to use for each OHDSI-in-a-Box instance
-      KeyName:
-        default: KeyName for SSH access to EC2 instance
       VolumeSizeGB:
         default: Disk space for each OHDSI-in-a-Box instance
       VPC:
         default: VPC in which to deploy the OHDSI-in-a-Box instances
       Subnet:
         default: Subnet to deploy the OHDSI-in-a-Box instances
+
+
 
 Parameters:
   AccessCidr:
@@ -88,10 +89,6 @@ Parameters:
       - p2.xlarge
       - g3.4xlarge
     Default: t2.medium
-  KeyName:
-    Description: 'Existing KeyPair for SSH access to the EC2 instance'
-    # Type: String
-    Type: AWS::EC2::KeyPair::KeyName
   VolumeSizeGB:
       Type: Number
       Default: 100
@@ -118,9 +115,37 @@ Parameters:
 Mappings:
   RegionMap:
     us-east-1:
-      AMI: ami-0e3cf331376d436a6
-    us-west-2:
-      AMI: ami-0e3cf331376d436a6
+      AMI: ami-0218efc7f1abbbd60
+#    us-east-2:
+#      AMI: 
+#    us-west-1:
+#      AMI: 
+#    us-west-2:
+#      AMI: 
+#    ca-central-1:
+#      AMI: 
+    eu-west-1:
+      AMI: ami-0cc58d8587221973b
+#    eu-west-2:
+#      AMI: 
+#    eu-west-3:
+#      AMI: 
+#    eu-central-1:
+#      AMI: 
+#    sa-east-1:
+#      AMI: 
+#    ap-south-1:
+#      AMI: 
+#    ap-southeast-1:
+#      AMI: 
+#    ap-southeast-2:
+#      AMI: 
+    ap-northeast-1:
+      AMI: ami-055f269975ab569c7
+#    ap-northeast-2:
+#      AMI: 
+#    ap-northeast-3:
+#      AMI: 
 
 Resources:
   RDPSG:
@@ -149,6 +174,7 @@ Resources:
       InstanceType: !Ref InstanceType
       MinCount: !Ref NumberofInstances
       MaxCount: !Ref NumberofInstances
+      SubnetId: !Ref Subnet
       SecurityGroupIds:
         - !GetAtt 'RDPSG.GroupId'
       BlockDeviceMappings: 
@@ -157,14 +183,11 @@ Resources:
             VolumeSize: !Ref VolumeSizeGB
       UserData:
         Fn::Base64: !Sub |
-          <script>
-          echo select disk 0 > C:\diskpart.txt
-          echo select partition 2 >> C:\diskpart.txt
-          echo extend >> C:\diskpart.txt
-          diskpart /s C:\diskpart.txt
-          net user Administrator ${InstancePassword}
-          net user ohdsi ${InstancePassword}
-          </script>
+          #!/bin/bash
+          export diskname=`lsblk | grep disk | cut -d " " -f 1`
+          sudo growpart /dev/$diskname 0
+          sudo resize2fs /dev/${!diskname}1
+          sudo echo -e "${InstancePassword}\n${InstancePassword}" | passwd ohdsi
       TagSpecifications:
         - ResourceType: "instance"
           Tags: 
@@ -210,7 +233,7 @@ Resources:
               return failed({Error: "In-place updates not supported."});
             }
           };
-      Runtime: nodejs8.10
+      Runtime: nodejs12.x
       Timeout: 300
   LambdaExecutionRole:
     Type: AWS::IAM::Role
