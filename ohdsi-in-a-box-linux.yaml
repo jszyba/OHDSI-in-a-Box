@@ -23,6 +23,7 @@ Metadata:
       Parameters:
         - NumberofInstances
         - InstanceType
+        - KeyName
         - VolumeSizeGB
     - Label:
           default: Networking
@@ -39,6 +40,8 @@ Metadata:
         default: Number of OHDSI-in-a-Box instances to deploy
       InstanceType:
         default: Instance type to use for each OHDSI-in-a-Box instance
+      KeyName:
+        default: KeyName for SSH access to EC2 instance
       VolumeSizeGB:
         default: Disk space for each OHDSI-in-a-Box instance
       VPC:
@@ -89,6 +92,10 @@ Parameters:
       - p2.xlarge
       - g3.4xlarge
     Default: t2.medium
+  KeyName:
+    Description: 'Existing KeyPair for SSH access to the EC2 instance'
+    # Type: String
+    Type: AWS::EC2::KeyPair::KeyName
   VolumeSizeGB:
       Type: Number
       Default: 100
@@ -111,41 +118,14 @@ Parameters:
     Description: '[ Required ] The VPC that will be used for the OHDSI-in-a-box instances'
 
 
-#Mapping to find the OHDSI-in-a-box AMI in each region.
+## Mapping to find the OHDSI-in-a-box AMI in each region.
 Mappings:
   RegionMap:
     us-east-1:
       AMI: ami-0218efc7f1abbbd60
-#    us-east-2:
-#      AMI: 
-#    us-west-1:
-#      AMI: 
-#    us-west-2:
-#      AMI: 
-#    ca-central-1:
-#      AMI: 
-    eu-west-1:
-      AMI: ami-0cc58d8587221973b
-#    eu-west-2:
-#      AMI: 
-#    eu-west-3:
-#      AMI: 
-#    eu-central-1:
-#      AMI: 
-#    sa-east-1:
-#      AMI: 
-#    ap-south-1:
-#      AMI: 
-#    ap-southeast-1:
-#      AMI: 
-#    ap-southeast-2:
-#      AMI: 
-    ap-northeast-1:
-      AMI: ami-055f269975ab569c7
-#    ap-northeast-2:
-#      AMI: 
-#    ap-northeast-3:
-#      AMI: 
+    us-west-2:
+      AMI: ami-02ba118371bb314eb
+
 
 Resources:
   RDPSG:
@@ -172,6 +152,7 @@ Resources:
         - !Ref 'AWS::Region'
         - AMI
       InstanceType: !Ref InstanceType
+      KeyName: !Ref KeyName
       MinCount: !Ref NumberofInstances
       MaxCount: !Ref NumberofInstances
       SubnetId: !Ref Subnet

@@ -9,10 +9,8 @@ Quickly deploy a single instance implementation of OHDSI tools and sample data f
 ## Linux Version
 | AWS Region Code | Name | Launch |
 | --- | --- | --- 
-| cn-northwest-1 | China (Ningxia)| [![cloudformation-launch-stack](images/cloudformation-launch-stack.png)](https://cn-northwest-1.console.amazonaws.cn/cloudformation/home?region=cn-northwest-1#/stacks/new?stackName=OHDSI&templateURL=https://s3.amazonaws.com/ohdsi-rstudio/ohdsi-in-a-box-linux-china.yaml) |
-| eu-west-1 | EU (Ireland)| [![cloudformation-launch-stack](images/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=eu-west-1#/stacks/new?stackName=OHDSI&templateURL=https://s3.amazonaws.com/ohdsi-rstudio/ohdsi-in-a-box-linux.yaml) |
-| ap-northeast-1 | AP (Tokyo)| [![cloudformation-launch-stack](images/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=ap-northeast-1#/stacks/new?stackName=OHDSI&templateURL=https://s3.amazonaws.com/ohdsi-rstudio/ohdsi-in-a-box-linux.yaml) |
-| us-east-1 | US East (N. Virginia)| [![cloudformation-launch-stack](images/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=OHDSI&templateURL=https://s3.amazonaws.com/ohdsi-rstudio/ohdsi-in-a-box-linux.yaml) |
+| us-east-1 | US East (N. Virginia)| [![cloudformation-launch-stack](images/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=OHDSI&templateURL=https://s3.amazonaws.com/dcri-ohdsi/ohdsi-in-a-box-linux.yaml) |
+| us-west-2 | US West (Oregon)| [![cloudformation-launch-stack](images/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/new?stackName=OHDSI&templateURL=https://s3.amazonaws.com/dcri-ohdsi/ohdsi-in-a-box-linux.yaml) |
 
 | OHDSI Component | Version |
 | --- | --- 
@@ -47,10 +45,8 @@ Quickly deploy a single instance implementation of OHDSI tools and sample data f
 ## Windows Version
 | AWS Region Code | Name | Launch |
 | --- | --- | --- 
-| cn-northwest-1 | China (Ningxia)| [![cloudformation-launch-stack](images/cloudformation-launch-stack.png)](https://cn-northwest-1.console.amazonaws.cn/cloudformation/home?region=cn-northwest-1#/stacks/new?stackName=OHDSI&templateURL=https://s3.amazonaws.com/ohdsi-rstudio/ohdsi-in-a-box-china.yaml) |
-| ap-northeast-1 | AP (Tokyo)| [![cloudformation-launch-stack](images/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=ap-northeast-1#/stacks/new?stackName=OHDSI&templateURL=https://s3.amazonaws.com/ohdsi-rstudio/ohdsi-in-a-box.yaml) |
-| eu-west-1 | EU (Ireland)| [![cloudformation-launch-stack](images/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=eu-west-1#/stacks/new?stackName=OHDSI&templateURL=https://s3.amazonaws.com/ohdsi-rstudio/ohdsi-in-a-box.yaml) |
-| us-east-1 | US East (N. Virginia)| [![cloudformation-launch-stack](images/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=OHDSI&templateURL=https://s3.amazonaws.com/ohdsi-rstudio/ohdsi-in-a-box.yaml) |
+| us-east-1 | US East (N. Virginia)| [![cloudformation-launch-stack](images/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=OHDSI&templateURL=https://s3.amazonaws.com/dcri-ohdsi/ohdsi-in-a-box-windows.yaml) |
+| us-west-2 | US West (Oregon)| [![cloudformation-launch-stack](images/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/new?stackName=OHDSI&templateURL=https://s3.amazonaws.com/dcri-ohdsi/ohdsi-in-a-box-windows.yaml) |
 
 
 | OHDSI Component | Version |
