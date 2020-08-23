@@ -165,6 +165,7 @@ Resources:
 
   EC2InstancesFunction:
     Type: AWS::Lambda::Function
+    DeletionPolicy: Retain
     Properties:
       Handler: index.handler
       Role: !GetAtt LambdaExecutionRole.Arn
