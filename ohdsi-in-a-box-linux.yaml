@@ -166,7 +166,7 @@ Resources:
         - ResourceType: "instance"
           Tags: 
           - Key: "Name"
-            Value: !Sub 'OHDSIinaBox-${AWS::StackName}'
+            Value: !Sub 'ohdsi-inabox-linux-${AWS::StackName}'
 
   EC2InstancesFunction:
     Type: AWS::Lambda::Function
@@ -267,5 +267,5 @@ Resources:
 
 Outputs:
   OHDSIinaBoxInstances:
-    Value: !Join ['', ['https://', !Ref 'AWS::Region', '.console.aws.amazon.com/ec2/v2/home?region=', !Ref 'AWS::Region', '#Instances:search=', !Sub 'OHDSIinaBox-${AWS::StackName}']]
+    Value: !Join ['', ['https://', !Ref 'AWS::Region', '.console.aws.amazon.com/ec2/v2/home?region=', !Ref 'AWS::Region', '#Instances:search=', !Sub 'ohdsi-inabox-linux-${AWS::StackName}']]
     
