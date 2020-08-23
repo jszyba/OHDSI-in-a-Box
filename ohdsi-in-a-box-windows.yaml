@@ -23,6 +23,7 @@ Metadata:
       Parameters:
         - NumberofInstances
         - InstanceType
+        - KeyName
         - VolumeSizeGB
     - Label:
           default: Networking
@@ -39,6 +40,8 @@ Metadata:
         default: Number of OHDSI-in-a-Box instances to deploy
       InstanceType:
         default: Instance type to use for each OHDSI-in-a-Box instance
+      KeyName:
+        default: KeyName for SSH access to EC2 instance
       VolumeSizeGB:
         default: Disk space for each OHDSI-in-a-Box instance
       VPC:
@@ -87,6 +90,9 @@ Parameters:
       - p2.xlarge
       - g3.4xlarge
     Default: t2.medium
+  KeyName:
+    Description: 'Existing KeyPair for SSH access to the EC2 instance'
+    Type: AWS::EC2::KeyPair::KeyName
   VolumeSizeGB:
       Type: Number
       Default: 100
@@ -139,8 +145,10 @@ Resources:
         - !Ref 'AWS::Region'
         - AMI
       InstanceType: !Ref InstanceType
+      KeyName: !Ref KeyName
       MinCount: !Ref NumberofInstances
       MaxCount: !Ref NumberofInstances
+      SubnetId: !Ref Subnet
       SecurityGroupIds:
         - !GetAtt 'RDPSG.GroupId'
       BlockDeviceMappings: 
