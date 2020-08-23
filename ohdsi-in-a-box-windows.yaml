@@ -46,8 +46,6 @@ Metadata:
       Subnet:
         default: Subnet to deploy the OHDSI-in-a-Box instances
 
-
-
 Parameters:
   AccessCidr:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
@@ -111,41 +109,13 @@ Parameters:
     Description: '[ Required ] The VPC that will be used for the OHDSI-in-a-box instances'
 
 
-#Mapping to find the OHDSI-in-a-box AMI in each region.
+## Mapping to find the OHDSI-in-a-box AMI in each region.
 Mappings:
   RegionMap:
     us-east-1:
       AMI: ami-0e3cf331376d436a6
-#    us-east-2:
-#      AMI: 
-#    us-west-1:
-#      AMI: 
-#    us-west-2:
-#      AMI: 
-#    ca-central-1:
-#      AMI: 
-    eu-west-1:
-      AMI: ami-08bbc3487cf5a02a9
-#    eu-west-2:
-#      AMI: 
-#    eu-west-3:
-#      AMI: 
-#    eu-central-1:
-#      AMI: 
-#    sa-east-1:
-#      AMI: 
-#    ap-south-1:
-#      AMI: 
-#    ap-southeast-1:
-#      AMI: 
-#    ap-southeast-2:
-#      AMI: 
-    ap-northeast-1:
-      AMI: ami-03386267e7d031671
-#    ap-northeast-2:
-#      AMI: 
-#    ap-northeast-3:
-#      AMI: 
+   us-west-2:
+     AMI: ami-093e2d6acb44f1588
 
 Resources:
   RDPSG:
