@@ -49,8 +49,6 @@ Metadata:
       Subnet:
         default: Subnet to deploy the OHDSI-in-a-Box instances
 
-
-
 Parameters:
   AccessCidr:
     AllowedPattern: ^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])(\/([0-9]|[1-2][0-9]|3[0-2]))$
@@ -117,7 +115,6 @@ Parameters:
     Type: AWS::EC2::Subnet::Id
     Description: '[ Required ] The VPC that will be used for the OHDSI-in-a-box instances'
 
-
 ## Mapping to find the OHDSI-in-a-box AMI in each region.
 Mappings:
   RegionMap:
@@ -125,7 +122,6 @@ Mappings:
       AMI: ami-0218efc7f1abbbd60
     us-west-2:
       AMI: ami-02ba118371bb314eb
-
 
 Resources:
   RDPSG:
@@ -141,7 +137,6 @@ Resources:
       Tags:
         - Key: Name
           Value: RDP Security Group
-
 
   EC2Instances:
     Type: Custom::EC2Instances
@@ -185,34 +180,64 @@ Resources:
           var response = require('cfn-response');
           var AWS = require('aws-sdk');
           exports.handler = function(event, context) {
-            var physicalId = event.PhysicalResourceId || 'none';
-            function success(data) {
-              return response.send(event, context, response.SUCCESS, data, physicalId);
-            }
-            function failed(e) {
-              return response.send(event, context, response.FAILED, e, physicalId);
-            }
-            var ec2 = new AWS.EC2();
-            var instances;
-            if (event.RequestType == 'Create') {
-              var launchParams = event.ResourceProperties;
-              delete launchParams.ServiceToken;
-              ec2.runInstances(launchParams).promise().then((data)=> {
-                instances = data.Instances.map((data)=> data.InstanceId);
-                physicalId = instances.join(':');
-                return ec2.waitFor('instanceRunning', {InstanceIds: instances}).promise();
-              }).then((data)=> success({Instances: instances})
-              ).catch((e)=> failed(e));
-            } else if (event.RequestType == 'Delete') {
-              if (physicalId == 'none') {return success({});}
-              var deleteParams = {InstanceIds: physicalId.split(':')};
-              ec2.terminateInstances(deleteParams).promise().then((data)=>
-                ec2.waitFor('instanceTerminated', deleteParams).promise()
-              ).then((data)=>success({})
-              ).catch((e)=>failed(e));
-            } else {
-              return failed({Error: "In-place updates not supported."});
-            }
+              console.log("event ==> ==> ==> ==> ==>")
+              console.log(event)
+              var physicalId = event.PhysicalResourceId || 'none';
+              console.log("physicalId ==> ==> ==> ==> ==>");
+              console.log(physicalId);
+              function success(data) {
+                  console.log("success function data ==> ==> ==> ==> ==>");
+                  console.log(data);
+                  return response.send(event, context, response.SUCCESS, data, physicalId);
+              }
+              function failed(e) {
+                  console.log("failed function e ==> ==> ==> ==> ==>");
+                  console.log(e);
+                  return response.send(event, context, response.FAILED, e, physicalId);
+              }
+              var ec2 = new AWS.EC2();
+              var instances;
+              // Create
+              if (event.RequestType == 'Create') {
+                  var launchParams = event.ResourceProperties;
+                  console.log("launchParams ==> ==> ==> ==> ==>");
+                  console.log(launchParams);
+                  delete launchParams.ServiceToken;
+                  ec2.runInstances(launchParams).promise().then((data) => {
+                      console.log("runInstances function promise data ==> ==> ==> ==> ==>");
+                      console.log(data);
+                      instances = data.Instances.map((data)=> data.InstanceId);
+                      physicalId = instances.join(':');
+                      return ec2.waitFor('instanceRunning', {InstanceIds: instances}).promise();
+                  }).then((data) => {
+                      console.log("then function promise data ==> ==> ==> ==> ==>");
+                      console.log(data);
+                      success({
+                          Instances: instances
+                      })
+                  }).catch((e) => {
+                      console.log("failed function promise e ==> ==> ==> ==> ==>");
+                      console.log(e);
+                      failed(e);
+                  });
+              // Delete
+              } else if (event.RequestType == 'Delete') {
+                  if (physicalId == 'none') {
+                      return success({
+
+                      });
+                  }
+                  var deleteParams = {InstanceIds: physicalId.split(':')};
+                  ec2.terminateInstances(deleteParams).promise().then((data) => {
+                      ec2.waitFor('instanceTerminated', deleteParams).promise()
+                  }).then((data) => {
+                      success({})
+                  }).catch((e) => {
+                          failed(e)
+                  });
+              } else {
+                  return failed({Error: "In-place updates not supported."});
+              }
           };
       Runtime: nodejs12.x
       Timeout: 300
@@ -245,3 +270,4 @@ Resources:
 Outputs:
   OHDSIinaBoxInstances:
     Value: !Join ['', ['https://', !Ref 'AWS::Region', '.console.aws.amazon.com/ec2/v2/home?region=', !Ref 'AWS::Region', '#Instances:search=', !Sub 'OHDSIinaBox-${AWS::StackName}']]
+    
